@@ -1,6 +1,6 @@
-from typing import Annotated, Optional
+from typing import Annotated
 from beanie import Document, Indexed
-from pydantic import Field, field_validator
+from pydantic import Field
 from uuid import UUID, uuid4
 from datetime import datetime, timedelta, timezone
 
