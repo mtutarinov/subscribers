@@ -1,5 +1,6 @@
-from typing import Type, List, Optional, Generic, TypeVar
+from typing import Type, TypeVar
 from uuid import UUID
+from abc import ABC, abstractmethod
 
 from app.core.logger import get_logger
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -9,7 +10,7 @@ from app.database.models import BaseEntity
 
 T = TypeVar('T', bound=BaseEntity)
 
-class BaseRepository:
+class BaseRepository(ABC):
 
     def __init__(self, client: AsyncIOMotorClient, model_cls: Type[T]) -> None:
         self.logger = get_logger(__name__)
@@ -24,6 +25,13 @@ class BaseRepository:
         return model_cls.Settings.name
 
 
-    async def get_by_id(self, object_id: UUID):
+    async def get_by_id(self, object_id: UUID) -> BaseEntity:
         return await self.collection.find_one({"_id": object_id})
 
+    @abstractmethod
+    async def create(self, object_id) -> bool:
+        pass
+
+    @abstractmethod
+    async def update(self, object_id, data: dict) -> bool:
+        pass

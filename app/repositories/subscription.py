@@ -13,7 +13,7 @@ class SubscriptionRepository(BaseRepository):
         await self.collection.insert_one(subscription)
         return True
 
-    async def update(self, data: dict, subscription_id: UUID):
+    async def update(self, data: dict, subscription_id: UUID) -> bool:
         await self.collection.update_one(
             {'_id': subscription_id},
             {'$set': data}
